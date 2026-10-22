@@ -2,6 +2,7 @@
   import { move, spawn, hasMoves, score } from '@april-cs-npm/arcade-core';
   import { gameStats, recordScore } from '$lib/game.svelte.js'; 
   import Score from '$lib/components/Score.svelte';
+  import NewGameButton from '$lib/components/NewGameButton.svelte';
 
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
@@ -90,8 +91,8 @@ function boardToTiles(grid) {
 {#if gameOver}
   <p>Game over!</p>
 {/if}
-<button onclick={restart}>New Game</button>
-
+ <!-- the button calls the function when clicked -->
+<NewGameButton onNewGame={restart} /> 
 <div class="board">
   {#each tiles as tile (tile.id)}
     <div
