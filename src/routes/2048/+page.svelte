@@ -1,6 +1,7 @@
 <script>
   import { move, spawn, hasMoves, score } from '@april-cs-npm/arcade-core';
   import { gameStats, recordScore } from '$lib/game.svelte.js'; 
+  import Score from '$lib/components/Score.svelte';
 
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
@@ -85,8 +86,7 @@ function boardToTiles(grid) {
 <svelte:window onkeydown={handleKey} />
 
 <h1>2048</h1>
-<p>Score: {currentScore}</p>
-<p>Best: {gameStats.best}</p>
+<Score current={currentScore} best={gameStats.best} />
 {#if gameOver}
   <p>Game over!</p>
 {/if}
