@@ -1,12 +1,11 @@
 <script>
-	import favicon from '#lib/assets/favicon.svg';
+  import '../app.css';
+  import Nav from '$lib/components/Nav.svelte';
+  import Footer from '$lib/components/Footer.svelte';
 
-	/** @type {{children: import('svelte').Snippet}} */
-	let { children } = $props();
+  let { children } = $props();
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
-
+<Nav />
 {@render children()}
+<Footer />
