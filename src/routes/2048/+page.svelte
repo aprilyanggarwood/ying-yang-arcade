@@ -3,6 +3,7 @@
   import { gameStats, recordScore } from '$lib/game.svelte.js'; 
   import Score from '$lib/components/Score.svelte';
   import NewGameButton from '$lib/components/NewGameButton.svelte';
+  import Board from '$lib/components/Board.svelte';
 
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
@@ -93,37 +94,6 @@ function boardToTiles(grid) {
 {/if}
  <!-- the button calls the function when clicked -->
 <NewGameButton onNewGame={restart} /> 
-<div class="board">
-  {#each tiles as tile (tile.id)}
-    <div
-      class="tile"
-      style:grid-row={tile.r + 1}
-      style:grid-column={tile.c + 1}
-    >
-      {tile.value}
-    </div>
-  {/each}
-</div>
+<Board tiles={tiles} /> 
 
-<style>
-  .board {
-    display: grid;
-    grid-template-columns: repeat(4, 60px);
-    grid-template-rows: repeat(4, 60px);
-    gap: 4px;
-    margin-top: 12px;
-    background: #eee;
-    padding: 4px;
-    width: max-content;
-  }
-
-  .tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
-    background: #fff;
-    font-size: 20px;
-  }
-</style>
 
