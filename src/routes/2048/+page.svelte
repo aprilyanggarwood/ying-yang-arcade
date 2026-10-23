@@ -1,10 +1,12 @@
 <script>
   import { move, spawn, hasMoves, score } from '@april-cs-npm/arcade-core';
-  import { gameStats, recordScore } from '$lib/game.svelte.js'; 
+  import { gameStats, recordScore, loadBest } from '$lib/game.svelte.js';
   import Score from '$lib/components/Score.svelte';
   import NewGameButton from '$lib/components/NewGameButton.svelte';
   import Board from '$lib/components/Board.svelte';
   import TouchControls from '$lib/components/TouchControls.svelte';
+  import { onMount } from 'svelte';
+  
 
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
@@ -92,6 +94,31 @@ function boardToTiles(grid) {
     board = newBoard();
     currentScore = 0;
   }
+
+  const SAVE_KEY = 'arcade2048-game';
+
+  // 1. On mount (browser only), restore the saved best score and saved game
+  onMount(() => {
+    loadBest();
+
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved !== null) {
+      try {
+        const data = JSON.parse(saved);
+        board = data.board;
+        currentScore = data.score;
+      } catch {
+        // ignore a corrupted save and just keep the fresh board
+      }
+    }
+  });
+
+  // 2. Whenever the board or score changes, save the game (effect = client-only)
+  $effect(() => {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ board, score: currentScore }));
+  });
+
+
 </script>
 
 <svelte:window onkeydown={handleKey} />
