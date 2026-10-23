@@ -8,6 +8,22 @@
   import { onMount } from 'svelte';
   
 
+    // a tiny seedable PRNG (mulberry32): same seed -> same sequence in [0,1)
+  function makeRng(seed) {
+    let a = seed >>> 0;                 // force to an unsigned 32-bit integer
+    return function () {
+      a |= 0;
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  let rng = Math.random;      // default: unseeded (truly random)
+  let seedInput = $state('');  // the number the user types
+
+
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
     let b = [
@@ -16,8 +32,8 @@
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ];
-    b = spawn(b);
-    b = spawn(b);
+    b = spawn(b, rng);   // was spawn(b)
+    b = spawn(b, rng);   // was spawn(b)
     return b;
   }
 
@@ -79,7 +95,23 @@ function boardToTiles(grid) {
     // it was a real move:
     currentScore += score(board, direction);
     recordScore(currentScore);   
-    board = spawn(moved);   // add a new tile, and update the board state
+    board = spawn(moved, rng);   // add a new tile, and update the board state
+  }
+
+  function startSeededGame() {
+    const seed = Number(seedInput);
+    if (seedInput === '' || seedInput == null || Number.isNaN(seed)) {
+      return;                  // ignore empty / non-numeric input
+    }
+    rng = makeRng(seed);       // build a fresh deterministic generator
+    board = newBoard();        // first two spawns now come from the seed
+    currentScore = 0;
+  }
+
+  function restart() {
+    rng = Math.random;         // a normal New Game is random again
+    board = newBoard();
+    currentScore = 0;
   }
 
   // listen for arrow keys on the whole window
@@ -90,10 +122,6 @@ function boardToTiles(grid) {
     if (event.key === 'ArrowDown')  handleMove('down');
   }
 
-  function restart() {
-    board = newBoard();
-    currentScore = 0;
-  }
 
   const SAVE_KEY = 'arcade2048-game';
 
@@ -129,6 +157,13 @@ function boardToTiles(grid) {
   <!-- visually hidden; screen readers announce it when `status` changes -->
   <p class="sr-only" aria-live="polite">{status}</p>
   <NewGameButton onNewGame={restart} />
+  <div class="seed-controls">
+  <label>
+    Seed
+    <input type="number" bind:value={seedInput} placeholder="e.g. 42" />
+  </label>
+  <button onclick={startSeededGame}>Start with seed</button>
+</div>
   {#if gameOver}
     <p>Game over!</p>
   {/if}
@@ -137,3 +172,22 @@ function boardToTiles(grid) {
 </main>
 
 
+<style>
+  .seed-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    margin: var(--sp-2) 0;
+  }
+  .seed-controls input {
+    width: 8ch;
+    min-height: 44px;
+    padding: 0 0.5rem;
+    border: 2px solid var(--olive);
+    border-radius: var(--radius);
+  }
+  .seed-controls button {
+    min-height: 44px;
+    cursor: pointer;
+  }
+</style>
