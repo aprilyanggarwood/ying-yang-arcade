@@ -87,13 +87,12 @@ function boardToTiles(grid) {
 
 <svelte:window onkeydown={handleKey} />
 
-<h1>2048</h1>
-<Score current={currentScore} best={gameStats.best} />
-{#if gameOver}
-  <p>Game over!</p>
-{/if}
- <!-- the button calls the function when clicked -->
-<NewGameButton onNewGame={restart} /> 
-<Board tiles={tiles} /> 
+<main>
+  <h1>2048</h1>
+  <Score current={currentScore} best={gameStats.best} />
+  <NewGameButton onNewGame={restart} />
+  {#if gameOver}<p>Game over!</p>{/if}
+  <Board {tiles} />
+</main>
 
 

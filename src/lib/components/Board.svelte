@@ -12,12 +12,14 @@
 <style>
   .board {
     display: grid;
-    grid-template-columns: repeat(4, 60px);
-    grid-template-rows: repeat(4, 60px);
-    gap: 4px;
-    margin-top: 12px;
-    background: #eee;
-    padding: 4px;
-    width: max-content;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2.5%;
+    width: min(92vw, 420px);     /* fits a 320px phone, caps on desktop */
+    aspect-ratio: 1;             /* keeps the board square */
+    background: var(--olive);
+    padding: 2.5%;
+    border-radius: 8px;
+    margin-top: var(--sp-3);
   }
 </style>
