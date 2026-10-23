@@ -4,6 +4,7 @@
   import Score from '$lib/components/Score.svelte';
   import NewGameButton from '$lib/components/NewGameButton.svelte';
   import Board from '$lib/components/Board.svelte';
+  import TouchControls from '$lib/components/TouchControls.svelte';
 
   // a fresh board: all empty, then spawn two starting tiles
   function newBoard() {
@@ -56,6 +57,14 @@ function boardToTiles(grid) {
   // DERIVED: "is the game over?" is calculated from the board -> $derived
   let gameOver = $derived( hasMoves(board) === false );  
 
+  // a short message screen readers announce on score / game-over changes
+  let status = $derived(
+    gameOver
+      ? `Game over. Final score ${currentScore}.`
+      : `Score ${currentScore}.`
+  );
+  
+
   // the core game loop: handle one move in a direction
   function handleMove(direction) {
     const moved = move(board, direction);
@@ -90,9 +99,14 @@ function boardToTiles(grid) {
 <main>
   <h1>2048</h1>
   <Score current={currentScore} best={gameStats.best} />
+  <!-- visually hidden; screen readers announce it when `status` changes -->
+  <p class="sr-only" aria-live="polite">{status}</p>
   <NewGameButton onNewGame={restart} />
-  {#if gameOver}<p>Game over!</p>{/if}
+  {#if gameOver}
+    <p>Game over!</p>
+  {/if}
   <Board {tiles} />
+  <TouchControls onMove={handleMove} />
 </main>
 
 
