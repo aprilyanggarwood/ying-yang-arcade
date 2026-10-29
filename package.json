@@ -25,6 +25,6 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
-		"@april-cs-npm/arcade-core": "^1.0.1"
+		"@april-cs-npm/arcade-core": "^1.1.0"
 	}
 }

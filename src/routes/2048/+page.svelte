@@ -1,5 +1,5 @@
 <script>
-  import { move, spawn, hasMoves, score } from '@april-cs-npm/arcade-core';
+  import { move, spawn, hasMoves, canMove, score } from '@april-cs-npm/arcade-core';
   import { gameStats, recordScore, loadBest } from '$lib/game.svelte.js';
   import Score from '$lib/components/Score.svelte';
   import NewGameButton from '$lib/components/NewGameButton.svelte';
@@ -83,20 +83,19 @@ function boardToTiles(grid) {
   );
   
 
-  // the core game loop: handle one move in a direction
+  // handle a move in a given direction: if it changes the board, update the board and score
+  // if the move doesn't change the board, do nothing
+  // also record the score in localStorage if it changed
+  // also spawn a new tile if the move was valid
+  // also update the derived tiles list
   function handleMove(direction) {
-    const moved = move(board, direction);
-
-    // a move that changes nothing is NOT a move: do nothing
-    if (JSON.stringify(moved) === JSON.stringify(board)) {
-      return;
-    }
-
-    // it was a real move:
-    currentScore += score(board, direction);
-    recordScore(currentScore);   
-    board = spawn(moved, rng);   // add a new tile, and update the board state
+  if (!canMove(board, direction)) {
+    return;                       // nothing would change — not a move
   }
+  currentScore += score(board, direction);
+  recordScore(currentScore);   
+  board = spawn(move(board, direction), rng);
+}
 
   function startSeededGame() {
     const seed = Number(seedInput);
