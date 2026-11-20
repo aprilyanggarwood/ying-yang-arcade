@@ -1,5 +1,7 @@
 <script>
   import { page } from '$app/state';
+  // user comes from +layout.server.js -> available on page.data
+  let user = $derived(page.data.user);
 
   const links = [
     { href: '/',          label: 'Home' },
@@ -24,7 +26,32 @@
           </a>
         </li>
       {/each}
+
+      {#if user}
+      <li class="nav-user">
+      <span class="username">{user.username}</span>
+      <form method="POST" action="/logout">
+        <button type="submit">Log out</button>
+      </form>
+      </li>
+      {:else}
+      <li class="nav-auth">
+        <a
+          class="auth-link"
+          href="/login"
+          aria-current={page.url.pathname === '/login' ? 'page' : undefined}
+        >Log in</a>
+        <a
+          class="auth-link"
+          href="/register"
+          aria-current={page.url.pathname === '/register' ? 'page' : undefined}
+        >Register</a>
+      </li>
+      {/if}
+
     </ul>
+
+
   </nav>
 </header>
 
@@ -117,4 +144,79 @@
       justify-content: center;
     }
   }
+
+
+/* separate the auth buttons from the main nav links */
+.nav-auth {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+  padding-left: var(--sp-2);
+  margin-left: var(--sp-1);
+}
+
+.auth-link {
+  font-family: var(--font-head);
+  color: var(--white);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.auth-link:hover {
+  background: var(--gold);
+  color: var(--plaque);
+}
+
+.auth-link[aria-current="page"] {
+  background: var(--gold);
+  color: var(--plaque);
+}
+
+  /* logged-in username + logout, styled to match the nav */
+.nav-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-head);
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+  padding-left: var(--sp-2);
+  margin-left: var(--sp-1);
+
+}
+
+.nav-user .username {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* the logout form shouldn't add layout/margins */
+.nav-user form {
+  margin: 0;
+  display: inline;
+}
+
+/* make the logout button look like a nav link */
+.nav-user button {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.nav-user button:hover {
+  background: var(--gold);
+  color: var(--plaque);
+}
 </style>
