@@ -7,6 +7,7 @@
     { href: '/',          label: 'Home' },
     { href: '/crossword', label: 'Crossword' },
     { href: '/2048',      label: '2048' },
+    { href: '/games',     label: 'Battleship' },
     { href: '/about',     label: 'About' },
     { href: '/contact',   label: 'Contact' },
   ];
