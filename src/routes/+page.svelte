@@ -122,13 +122,13 @@
         <span class="play-label">Play now &rsaquo;</span>
       </a>
 
-      <!-- upcoming games: static, not links -->
-      <article class="cabinet locked">
-        <span class="tag soon">Coming soon</span>
+      <!-- Battleship is now live: a real link like Crossword and 2048 -->
+      <a class="cabinet" href="/games">
+        <span class="tag live">Playable</span>
         <h3>Battleship</h3>
-        <p>Turn-based naval guessing, with your opponent's board kept
-          honest by a server.</p>
-      </article>
+        <p>Turn-based naval guessing, with your opponent's board kept honest by a server.</p>
+        <span class="play-label">Play now &rsaquo;</span>
+      </a>
 
       <article class="cabinet locked">
         <span class="tag soon">Coming soon</span>

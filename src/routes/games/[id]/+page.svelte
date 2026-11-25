@@ -63,16 +63,22 @@
         {#each oppBoard as row, r}
         {#each row as cell, c}
             {#if myTurn && game.status === 'active' && cell !== 'hit' && cell !== 'miss'}
-            <!-- firable: a button that submits the shoot action -->
-            <form method="POST" action="?/shoot" class="cell-form">
-                <input type="hidden" name="row" value={r} />
-                <input type="hidden" name="col" value={c} />
-                <button
-                type="submit"
-                class="cell {cell}"
-                aria-label="Fire at enemy row {r + 1}, column {c + 1}"
-                ></button>
-            </form>
+                <!-- firable: a button that submits the shoot action -->
+                <form method="POST" action="?/shoot" class="cell-form">
+                    <input type="hidden" name="row" value={r} />
+                    <input type="hidden" name="col" value={c} />
+                    <button
+                    type="submit"
+                    class="cell {cell}"
+                    aria-label="Fire at enemy row {r + 1}, column {c + 1}"
+                    onkeydown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.currentTarget.form.requestSubmit();
+                        }
+                    }}
+                    ></button>
+                </form>
             {:else}
             <!-- not firable: already shot, not your turn, or game over -->
             <div class="cell {cell}" aria-label="enemy row {r + 1}, column {c + 1}: {cell}">
@@ -90,29 +96,48 @@
 
 <style>
   .boards { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(10, 28px);
-    grid-template-rows: repeat(10, 28px);
-    gap: 2px;
-  }
 
-  .cell {
-  width: 28px;
-  height: 28px;
+  @media (max-width: 640px) {
+    .boards {
+        flex-direction: column;
+    }
+  }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);   
+  grid-template-rows: repeat(10, 1fr);
+  gap: 2px;
+  width: min(90vw, 320px);                  /* fits a phone, caps on desktop */
+  aspect-ratio: 1;                          /* keep it square */
+}
+
+.cell {
   border: 1px solid var(--olive);
-  background: #cfe0ec;            /* water */
-  display: flex;                  /* center the symbol */
+  background: #cfe0ec;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: clamp(0.6rem, 2.5vw, 0.9rem);
   line-height: 1;
+  width: 100%;         /* fill the grid track */
+  height: 100%;
+  box-sizing: border-box;   /* border doesn't overflow the cell */
 }
+
 .cell.ship  { background: var(--olive); }
 .cell.hit   { background: #b00020; color: #ffffff; }   /* red cell, white ● */
 .cell.miss  { background: #5a6b7a; color: #ffffff; }   /* slate cell, white ✕ */
 
-.cell-form { margin: 0; display: block; }
+.cell-form {
+  margin: 0;
+  display: block;
+  aspect-ratio: 1;     /* match the cell square */
+}
+
+.cell-form button.cell {
+  width: 100%;
+  height: 100%;        /* button fills the form, which fills the grid cell */
+}
 
 button.cell {
   padding: 0;
@@ -120,6 +145,12 @@ button.cell {
 }
 button.cell:hover {
   outline: 2px solid var(--gold);   /* highlight the target cell on hover */
+}
+
+button.cell:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;    /* keep the ring inside the small cell */
+  z-index: 1;
 }
 
 .shot-result { font-weight: bold; font-size: 1.1rem; }
