@@ -60,10 +60,15 @@
       <p>You're not in any games yet.</p>
     {:else}
       <ul>
-        {#each myGames as game, i (game._id)}
+        {#each myGames as game (game._id)}
             <li>
                 <a href="/games/{game._id}">
-                Your game {i + 1} — {gameLabel(game)}
+                {#if game.status === 'waiting'}
+                    Waiting for an opponent
+                {:else}
+                    vs {String(game.player1) === String(user._id) ? game.player2Name : game.player1Name}
+                {/if}
+                — {gameLabel(game)}
                 </a>
             </li>
         {/each}
