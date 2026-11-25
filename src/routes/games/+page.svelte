@@ -66,9 +66,8 @@
                 {#if game.status === 'waiting'}
                     Waiting for an opponent
                 {:else}
-                    vs {String(game.player1) === String(user._id) ? game.player2Name : game.player1Name}
+                    vs {String(game.player1) === String(user._id) ? game.player2Name : game.player1Name} — {gameLabel(game)}
                 {/if}
-                — {gameLabel(game)}
                 </a>
             </li>
         {/each}
