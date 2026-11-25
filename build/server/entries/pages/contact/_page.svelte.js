@@ -1,0 +1,17 @@
+import { a as head } from "../../../chunks/server2.js";
+//#region src/routes/contact/+page.svelte
+function _page($$renderer) {
+	head("1bv7ezn", $$renderer, ($$renderer) => {
+		$$renderer.title(($$renderer) => {
+			$$renderer.push(`<title>Contact — April's Game Parlor</title>`);
+		});
+		$$renderer.push(`<meta name="description" content="Get in touch with April Yang by email, phone, GitHub, or LinkedIn, or send a note straight from the contact form on this page."/> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>`);
+	});
+	$$renderer.push(`<main><h1>Contact</h1> <p class="lead svelte-1bv7ezn">Questions about the parlor, or just want to say hello? Reach me at any
+    of the links below, or send a note straight from this page.</p> <div class="contact-layout svelte-1bv7ezn"><section class="contact-info svelte-1bv7ezn" aria-label="Contact details"><h2 class="svelte-1bv7ezn">Reach me directly</h2> <ul class="contact-list svelte-1bv7ezn"><li><a href="mailto:aprilyanggarwood@gmail.com" aria-label="Email April at aprilyanggarwood at gmail dot com" class="svelte-1bv7ezn"><span class="contact-icon svelte-1bv7ezn"><i class="fa-solid fa-envelope svelte-1bv7ezn" aria-hidden="true"></i></span> <span class="contact-text svelte-1bv7ezn">aprilyanggarwood@gmail.com</span></a></li> <li><a href="tel:+14252097335" aria-label="Call April at 4 2 5, 2 0 9, 7 3 3 5" class="svelte-1bv7ezn"><span class="contact-icon svelte-1bv7ezn"><i class="fa-solid fa-phone svelte-1bv7ezn" aria-hidden="true"></i></span> <span class="contact-text svelte-1bv7ezn">425-209-7335</span></a></li> <li><a href="https://github.com/aprilyanggarwood" target="_blank" rel="noopener" aria-label="April's GitHub profile" class="svelte-1bv7ezn"><span class="contact-icon svelte-1bv7ezn"><i class="fa-brands fa-github svelte-1bv7ezn" aria-hidden="true"></i></span> <span class="contact-text svelte-1bv7ezn">GitHub</span></a></li> <li><a href="https://www.linkedin.com/in/ying-april-yang-a9bb8720/" target="_blank" rel="noopener" aria-label="April's LinkedIn profile" class="svelte-1bv7ezn"><span class="contact-icon svelte-1bv7ezn"><i class="fa-brands fa-linkedin-in svelte-1bv7ezn" aria-hidden="true"></i></span> <span class="contact-text svelte-1bv7ezn">LinkedIn</span></a></li></ul></section> <section class="contact-form-section svelte-1bv7ezn" aria-label="Send a message"><h2 class="svelte-1bv7ezn">Send a message</h2> <form class="contact-form svelte-1bv7ezn" action="mailto:aprilyanggarwood@gmail.com" method="post" enctype="text/plain"><label class="field svelte-1bv7ezn"><span class="field-label svelte-1bv7ezn">Your name</span> <input type="text" name="name" autocomplete="name" required="" class="svelte-1bv7ezn"/></label> <label class="field svelte-1bv7ezn"><span class="field-label svelte-1bv7ezn">Your email</span> <input type="email" name="email" autocomplete="email" required="" class="svelte-1bv7ezn"/></label> <label class="field svelte-1bv7ezn"><span class="field-label svelte-1bv7ezn">Message</span> <textarea name="message" required="" class="svelte-1bv7ezn"></textarea></label> <button type="submit" class="cta svelte-1bv7ezn">Send message</button> <p class="form-note svelte-1bv7ezn">Submitting opens your own email app with the message ready to send
+          to April.</p></form></section></div></main>`);
+}
+//#endregion
+export { _page as default };
+
+//# sourceMappingURL=_page.svelte.js.map

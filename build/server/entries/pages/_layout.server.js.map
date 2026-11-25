@@ -1,0 +1,1 @@
+{"version":3,"file":"_layout.server.js","names":[],"sources":["../../../../src/routes/+layout.server.js"],"sourcesContent":["// make the logged-in user available to every page\r\nexport function load({ locals }) {\r\n  return { user: locals.user };\r\n}"],"mappings":";AACA,SAAgB,KAAK,EAAE,UAAU;CAC/B,OAAO,EAAE,MAAM,OAAO,KAAK;AAC7B"}
