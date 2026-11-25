@@ -41,14 +41,14 @@
       <p>No open games right now. Create one above.</p>
     {:else}
       <ul>
-        {#each openGames as game (game._id)}
-          <li>
-            Game by another player
-            <form method="POST" action="?/join">
-              <input type="hidden" name="id" value={game._id} />
-              <button type="submit">Join</button>
-            </form>
-          </li>
+        {#each openGames as game, i (game._id)}
+            <li>
+                Open game {i + 1}
+                <form method="POST" action="?/join">
+                <input type="hidden" name="id" value={game._id} />
+                <button type="submit">Join</button>
+                </form>
+            </li>
         {/each}
       </ul>
     {/if}
@@ -63,7 +63,7 @@
         {#each myGames as game, i (game._id)}
             <li>
                 <a href="/games/{game._id}">
-                Game {i + 1} — {gameLabel(game)}
+                Your game {i + 1} — {gameLabel(game)}
                 </a>
             </li>
         {/each}
