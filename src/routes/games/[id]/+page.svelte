@@ -1,5 +1,8 @@
 <script>
   import { page } from '$app/state';
+  import { scale } from 'svelte/transition';
+  import { enhance } from '$app/forms';
+
   let { data, form } = $props();
 
   let user = $derived(page.data.user);
@@ -48,11 +51,12 @@
       <h2>Your fleet</h2>
       <div class="grid">
         {#each myBoard as row, r}
-            {#each row as cell, c}
-                <div class="cell {cell}" aria-label="your row {r + 1}, column {c + 1}: {cell}">
-                {#if cell === 'hit'}●{:else if cell === 'miss'}✕{/if}
-                </div>
-            {/each}
+          {#each row as cell, c (r + '-' + c + '-' + cell)}
+            <div class="cell {cell}" aria-label="your row {r + 1}, column {c + 1}: {cell}">
+              {#if cell === 'hit'}<span in:scale={{ duration: 500 }}>●</span>
+              {:else if cell === 'miss'}<span in:scale={{ duration: 500 }}>✕</span>{/if}
+            </div>
+          {/each}
         {/each}
       </div>
     </section>
@@ -61,31 +65,25 @@
     <h2>Enemy waters</h2>
     <div class="grid">
         {#each oppBoard as row, r}
-        {#each row as cell, c}
+          {#each row as cell, c (r + '-' + c + '-' + cell)}
             {#if myTurn && game.status === 'active' && cell !== 'hit' && cell !== 'miss'}
-                <!-- firable: a button that submits the shoot action -->
-                <form method="POST" action="?/shoot" class="cell-form">
-                    <input type="hidden" name="row" value={r} />
-                    <input type="hidden" name="col" value={c} />
-                    <button
-                    type="submit"
-                    class="cell {cell}"
-                    aria-label="Fire at enemy row {r + 1}, column {c + 1}"
-                    onkeydown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        e.currentTarget.form.requestSubmit();
-                        }
-                    }}
-                    ></button>
-                </form>
+              <!-- firable button — no symbol, no change needed here -->
+              <form method="POST" action="?/shoot" class="cell-form" use:enhance> 
+                <input type="hidden" name="row" value={r} />
+                <input type="hidden" name="col" value={c} />
+                <button type="submit" class="cell {cell}"
+                  aria-label="Fire at enemy row {r + 1}, column {c + 1}"
+                  onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.form.requestSubmit(); } }}
+                ></button>
+              </form>
             {:else}
-            <!-- not firable: already shot, not your turn, or game over -->
-            <div class="cell {cell}" aria-label="enemy row {r + 1}, column {c + 1}: {cell}">
-                {#if cell === 'hit'}●{:else if cell === 'miss'}✕{/if}
-            </div>
+              <!-- non-firable: this is where hit/miss symbols show -->
+              <div class="cell {cell}" aria-label="enemy row {r + 1}, column {c + 1}: {cell}">
+                {#if cell === 'hit'}<span in:scale={{ duration: 500 }}>●</span>
+                {:else if cell === 'miss'}<span in:scale={{ duration: 500 }}>✕</span>{/if}
+              </div>
             {/if}
-        {/each}
+          {/each}
         {/each}
     </div>
     </section>

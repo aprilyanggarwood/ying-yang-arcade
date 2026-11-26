@@ -1,5 +1,6 @@
 <script>
   import { page } from '$app/state';
+
   let { data, form } = $props();
 
   let user = $derived(page.data.user);
